@@ -21,6 +21,7 @@ public class Comment {
     private String content;
     private Integer rating;
     private LocalDateTime createdAt = LocalDateTime.now();
+    boolean isApproved = false;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
