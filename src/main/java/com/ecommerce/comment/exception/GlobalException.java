@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-// Spring know exception happen
+// Spring know exception happen and catch it
+// All of exception will handle in here
 public class GlobalException {
     // Catch all method related runtime exception
     @ExceptionHandler(value = RuntimeException.class)

@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 @Service
+// Handle all logic of comment entity
 public class CommentService implements ICommentService {
     @Autowired
     private CommentRepository commentRepository;
@@ -31,7 +33,7 @@ public class CommentService implements ICommentService {
     private UserRepository userRepository;
     @Autowired
     private ProductRepository productRepository;
-
+    // Add new comment
     @Override
     public Comment addNewComment(CommentRequest commentRequest) {
         //Find user
@@ -61,6 +63,7 @@ public class CommentService implements ICommentService {
         }
         return false;
     }
+    // Get list all comments
     @Override
     public List<CommentResponse> findAllComment(Pageable pageable) {
         List<Comment> comments = commentRepository.findAllComments(pageable);
@@ -71,19 +74,24 @@ public class CommentService implements ICommentService {
         }
         return commentResponses;
     }
-
+    // List of comment is unapproved
     @Override
-    public List<Comment> findAllCommentNotApproval() {
-        return commentRepository.findByIsApprovedFalse();
+    public List<CommentResponse> findAllCommentNotApproval(Pageable pageable) {
+        List<Comment> comments = commentRepository.findCommentIsApprovedFalse(pageable);
+        List<CommentResponse> commentResponses = new ArrayList<>();
+        for(Comment comment : comments) {
+            CommentResponse commentResponse = convertEntityToResponse(comment);
+            commentResponses.add(commentResponse);
+        }
+        return commentResponses;
     }
-
+    // Find comment by : product name, customer name
+    // Pagination with each page has 3 comments
     @Override
     public List<CommentResponse> findCommentByField(String productName,
                                             String customerName,
-                                            LocalDateTime startDate,
-                                            LocalDateTime endDate,
                                             Pageable pageable) {
-        List<Comment> comments = commentRepository.searchCommentsBy(productName, customerName, startDate, endDate, pageable);
+        List<Comment> comments = commentRepository.searchCommentsBy(productName, customerName, pageable);
         if(comments.isEmpty()) {
             throw new ResourceNotFoundException("Data is not exist, please try again !");
         }
@@ -94,7 +102,7 @@ public class CommentService implements ICommentService {
         }
         return commentResponses;
     }
-
+    // Delete comment by id
     @Override
     public void deleteComment(Long id) {
         Comment comment = commentRepository.findById(id)
@@ -102,11 +110,12 @@ public class CommentService implements ICommentService {
         comment.setApproved(false);
         commentRepository.deleteById(id);
     }
-
+    // Get comment statistics by total comments, approved comments, and unapproved comments
     @Override
-    public String commentStatistic() {
+    public Map<String, Object> getCommentStatistics() {
         return null;
     }
+
     // Check comment if comment content has contains sensitive words, throw exception
     // If it hasn't contains exception, allow comment and shows for user
     @Override
@@ -119,6 +128,12 @@ public class CommentService implements ICommentService {
         comment.setApproved(true);
         return commentRepository.save(comment);
     }
+    // Show total approved comments
+    @Override
+    public Long countApprovedComments() {
+        return commentRepository.countApprovedComments();
+    }
+    // Convert entity to response
     public CommentResponse convertEntityToResponse(Comment comment) {
         CommentResponse commentResponse = new CommentResponse();
         commentResponse.setContent(comment.getContent());

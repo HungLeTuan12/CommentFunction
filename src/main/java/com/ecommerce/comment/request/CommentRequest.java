@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+// This class handle entity request for receiving data for client
 public class CommentRequest {
     @NotNull(message = "Content can not null")
     @Size(min = 10,max = 255,message = "Length of title must between 10 and 255")
@@ -22,6 +23,7 @@ public class CommentRequest {
     @Max(value = 5, message = "Rating must not be more than 5")
     private Integer rating;
     private LocalDateTime createdAt = LocalDateTime.now();
+    // rating start from 1 and end is 5
     boolean isApproved = false;
     private Long userId;
     private Long productId;
