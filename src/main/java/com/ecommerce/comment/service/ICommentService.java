@@ -12,18 +12,41 @@ import java.util.Map;
 
 // This interface will provide for user all functions for comments entity
 public interface ICommentService {
-    public Comment addNewComment(CommentRequest commentRequest);
     // Get all comment from user
     public List<CommentResponse> findAllComment(Pageable pageable);
-    // Get all comment is not approval
+
+    /**
+     * Function: Get List of comment is unapproved
+     * @param pageable: pagination for return data
+     * @return information of comment for user
+     */
     public List<CommentResponse> findAllCommentNotApproval(Pageable pageable);
-    // Get all comment by product name or date
+
+    /**
+     * Pagination with each page has 3 comments
+     * @param productName: name of product
+     * @param customerName: name of customer
+     * @param pageable: pagination for data
+     */
     public List<CommentResponse> findCommentByField(String productName, String customerName,  Pageable pageable);
-    // Delete comment
-    // Params: id - comment id attribute
+    /**
+     * This function is responsible for deleting comment by id of comment
+     * @param id: id of comment
+     * Ecxeption: Comment not found -> throw ResourceNotFoundException
+     */
     public void deleteComment(Long id);
-    public Map<String, Object> getCommentStatistics();
-    // Function: check validation of comment content
+    /**
+     *
+     * @param productId: id of product
+     * @return map object contains information about total comments, Approved Comments, UnapprovedComments and rating quantity
+     */
+    public Map<String, Object> getCommentStatisticsForProduct(Long productId);
+    /**
+     * Check comment if comment content has contains sensitive words, throw exception
+     * If it hasn't contains exception, allow comment and shows for user
+     * @param commentId: id of comment
+     * @return comment after checking with field isApproved(comment entity) of comment is true
+     */
     public Comment checkComment(Long commentId);
-    public Long countApprovedComments();
+    public Comment addNewComment(CommentRequest commentRequest);
 }

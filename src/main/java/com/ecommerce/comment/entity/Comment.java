@@ -27,11 +27,11 @@ public class Comment {
     // true: comment is approved
     boolean isApproved = false;
     // One user has many comments
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
     // One product has many comments
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false)
     private Product product;
 }

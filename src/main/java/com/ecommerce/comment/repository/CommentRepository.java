@@ -35,5 +35,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Long countApprovedComments();
     // Gọi stored procedure `sp_comment_statistics`
     @Procedure(name = "sp_comment_statistics")
-    List<Object[]> getCommentStatistics();
+    List<Object[]> getCommentStatistics(@Param("product_id") Long productId);
 }
