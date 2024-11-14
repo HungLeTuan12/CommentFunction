@@ -9,18 +9,16 @@ import com.ecommerce.comment.exception.ResourceNotFoundException;
 import com.ecommerce.comment.repository.CommentRepository;
 import com.ecommerce.comment.repository.ProductRepository;
 import com.ecommerce.comment.repository.UserRepository;
-import com.ecommerce.comment.request.CommentRequest;
-import com.ecommerce.comment.response.CommentResponse;
+import com.ecommerce.comment.dto.request.CommentRequest;
+import com.ecommerce.comment.dto.response.CommentResponse;
 import com.ecommerce.comment.service.ICommentService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -61,6 +59,10 @@ public class CommentService implements ICommentService {
      * @param comment: comment input from user
      */
     private boolean containsSensitiveWords(String comment) {
+        // If comment null return NullPointerException
+        if(comment == null) {
+            return false;
+        }
         Set<String> sensitiveWords = SensitiveWords.getSensitiveWords();
         for(String word : sensitiveWords) {
             Pattern pattern = Pattern.compile("\\b" + Pattern.quote(word) + "\\b", Pattern.CASE_INSENSITIVE);
@@ -152,7 +154,11 @@ public class CommentService implements ICommentService {
 
         // Trích xuất kết quả từ stored procedure
         Map<String, Object> statistics = new HashMap<>();
+        if(query.getResultList() == null) {
+            throw new ResourceNotFoundException("Data not found !!");
+        }
         List<Object[]> ratingCounts = query.getResultList();
+
 
         // Giả sử kết quả trả về đầu tiên là tổng số comment, số comment đã duyệt và chưa duyệt
         Object[] totalStats = ratingCounts.get(0);

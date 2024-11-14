@@ -1,12 +1,10 @@
 package com.ecommerce.comment.service;
 
 import com.ecommerce.comment.entity.Comment;
-import com.ecommerce.comment.request.CommentRequest;
-import com.ecommerce.comment.response.CommentResponse;
-import org.springframework.data.domain.Page;
+import com.ecommerce.comment.dto.request.CommentRequest;
+import com.ecommerce.comment.dto.response.CommentResponse;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 

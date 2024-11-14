@@ -1,4 +1,4 @@
-package com.ecommerce.comment.request;
+package com.ecommerce.comment.dto.request;
 
 import com.ecommerce.comment.entity.Product;
 import com.ecommerce.comment.entity.User;

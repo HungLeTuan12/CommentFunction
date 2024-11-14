@@ -1,4 +1,4 @@
-package com.ecommerce.comment.response;
+package com.ecommerce.comment.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

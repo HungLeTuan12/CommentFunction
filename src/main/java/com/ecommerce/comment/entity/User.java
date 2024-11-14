@@ -20,7 +20,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String password;
     private String email;
+    private String fullName;
     // One user has many comments for one product
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();

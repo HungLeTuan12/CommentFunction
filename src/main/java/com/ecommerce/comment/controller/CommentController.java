@@ -1,10 +1,8 @@
 package com.ecommerce.comment.controller;
 
 import com.ecommerce.comment.entity.Comment;
-import com.ecommerce.comment.exception.ResourceNotFoundException;
-import com.ecommerce.comment.request.CommentRequest;
-import com.ecommerce.comment.response.CommentResponse;
-import com.ecommerce.comment.response.ErrorResponse;
+import com.ecommerce.comment.dto.request.CommentRequest;
+import com.ecommerce.comment.dto.response.CommentResponse;
 import com.ecommerce.comment.response.SuccessResponse;
 import com.ecommerce.comment.service.impl.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,7 +13,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
