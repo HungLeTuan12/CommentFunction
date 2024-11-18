@@ -1,5 +1,7 @@
 package com.ecommerce.comment.dto.request;
 
+import com.ecommerce.comment.dto.response.RoleResponse;
+import com.ecommerce.comment.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -7,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,4 +30,5 @@ public class UserRequest {
     @Email
     @NotNull(message = "Email can not null")
     private String email;
+    Set<String> role;
 }

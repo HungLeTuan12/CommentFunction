@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -97,6 +98,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Comment is not valid"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
+    @PreAuthorize("hasAuthority('CHECK_COMMENTS')")
     @PostMapping("/check-comments/{id}")
     public ResponseEntity<?> checkComments(
             @Parameter(description = "ID of the comment to check", required = true, example = "123")

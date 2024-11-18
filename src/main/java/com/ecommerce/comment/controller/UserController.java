@@ -12,8 +12,10 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
     @Autowired
     private UserService userService;
@@ -32,6 +35,9 @@ public class UserController {
     })
     @GetMapping("/find-all")
     public ResponseEntity<?> getAllUsers() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
         List<User> users = userService.getAllUsers();
         List<UserResponse> userResponses = new ArrayList<>();
         for(User user : users) {
@@ -48,7 +54,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Adding user failed")
     })
     @PostMapping("/")
-    public ResponseEntity<?> addNewUser(@RequestBody @Valid UserRequest userRequest) {
+    public ResponseEntity<?> addNewUser(@Parameter(description = "Des")@RequestBody @Valid UserRequest userRequest) {
         User user = userService.addNewUser(userRequest);
         UserResponse userResponse = convertEntityToResponse(user);
         return ResponseEntity.ok(new SuccessResponse<>("Adding successfully",userResponse));
@@ -87,6 +93,7 @@ public class UserController {
         userResponse.setPassword(user.getPassword());
         userResponse.setUsername(user.getUsername());
         userResponse.setEmail(user.getEmail());
+        userResponse.setRoles(user.getRole());
         return userResponse;
     }
 }

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,4 +28,7 @@ public class User {
     // One user has many comments for one product
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+    private Set<String> roles = new HashSet<>();
+    @ManyToMany
+    private Set<Role> role = new HashSet<>();
 }
